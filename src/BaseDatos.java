@@ -1,34 +1,24 @@
 import java.sql.*;
 
 public class BaseDatos {
+    // Atributos
     private String url = "jdbc:sqlite:data/transferencias.sqlite";
     private Connection conn = null;
     private Statement statement = null;
     private ResultSet resultSet = null;
 
     // Getters and setters
-    public String getUrl() {
-        return url;
-    }
-
-    public Connection getConn() {
-        return conn;
-    }
-
     public Statement getStatement() {
         return statement;
     }
 
-    public ResultSet getResultSet() {
-        return resultSet;
-    }
-
+    // Métodos
     public void conectar(){
         try {
             // Abre la conexión a la base de datos
             conn = DriverManager.getConnection(url);
             statement = conn.createStatement();
-            System.out.println("Conexión establecida.");
+            //System.out.println("Conexión establecida.");
 
             // Crear las tablas solo si no existen
             inicializarTablaTitulares();
@@ -54,7 +44,8 @@ public class BaseDatos {
                     "cuil TEXT PRIMARY KEY," + // CUIL como clave primaria
                     "nombre TEXT NOT NULL," +
                     "email TEXT NOT NULL," +
-                    "alias TEXT NOT NULL" +
+                    "alias TEXT NOT NULL," +
+                    "cbu TEXT NOT NULL" +
                     ");";
             statement.executeUpdate(createTableSQL);
         } catch (SQLException e) {
