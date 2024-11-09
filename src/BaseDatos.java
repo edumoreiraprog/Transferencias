@@ -1,84 +1,70 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class BaseDatos {
-    // Atributos
-    private String url = "jdbc:sqlite:data/transferencias.sqlite";
+    // Atributo de conexión
+    private static final String URL = "jdbc:sqlite:data/transferencias.sqlite";
     private Connection conn = null;
-    private Statement statement = null;
-    private ResultSet resultSet = null;
 
-    // Getters and setters
-    public Statement getStatement() {
-        return statement;
-    }
-
-    // Métodos
-    public void conectar(){
+    // Conectar a la base de datos
+    public void conectar() {
         try {
-            // Abre la conexión a la base de datos
-            conn = DriverManager.getConnection(url);
-            statement = conn.createStatement();
-            //System.out.println("Conexión establecida.");
-
-            // Crear las tablas solo si no existen
-            inicializarTablaTitulares();
-            inicializarTablaTransferencias();
+            conn = DriverManager.getConnection(URL);
+            System.out.println("Conexión a la base de datos establecida.");
+            inicializarTablas();
         } catch (SQLException e) {
             System.out.println("Error al conectar a la base de datos: " + e.getMessage());
         }
     }
 
+    // Cerrar conexión
     public void cerrarConexion() {
         try {
-            if (resultSet != null) resultSet.close();
-            if (statement != null) statement.close();
-            if (conn != null) conn.close();
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+                System.out.println("Conexión cerrada.");
+            }
         } catch (SQLException e) {
             System.out.println("Error al cerrar la conexión: " + e.getMessage());
         }
     }
 
-    private void inicializarTablaTitulares() {
-        try {
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS titulares (" +
-                    "cuil TEXT PRIMARY KEY," + // CUIL como clave primaria
-                    "nombre TEXT NOT NULL," +
-                    "email TEXT NOT NULL," +
-                    "alias TEXT NOT NULL," +
-                    "cbu TEXT NOT NULL" +
-                    ");";
-            statement.executeUpdate(createTableSQL);
-        } catch (SQLException e) {
-            System.out.println("Error al crear la tabla titulares: " + e.getMessage());
-        }
+    // Método para obtener la conexión (para uso en otras clases)
+    public Connection getConnection() {
+        return conn;
     }
 
-    private void inicializarTablaTransferencias() {
-        try {
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS transferencias (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "aliasDEBITO TEXT NOT NULL," +
-                    "aliasCREDITO TEXT NOT NULL," +
-                    "cbuDEBITO TEXT NOT NULL," +
-                    "cbuCREDITO TEXT NOT NULL," +
-                    "IMPORTE REAL NOT NULL," +
-                    "CONCEPTO TEXT," +
-                    "MOTIVO TEXT," +
-                    "REFERENCIA TEXT," +
-                    "EMAIL TEXT," +
-                    "TITULAR TEXT NOT NULL" +
-                    ");";
-            statement.executeUpdate(createTableSQL);
+    // Inicializar tablas
+    private void inicializarTablas() {
+        crearTabla("CREATE TABLE IF NOT EXISTS titulares (" +
+                "cuil TEXT PRIMARY KEY, " +
+                "nombre TEXT NOT NULL, " +
+                "email TEXT NOT NULL, " +
+                "alias TEXT NOT NULL, " +
+                "cbu TEXT NOT NULL);");
+
+        crearTabla("CREATE TABLE IF NOT EXISTS transferencias (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "aliasDEBITO TEXT NOT NULL, " +
+                "aliasCREDITO TEXT NOT NULL, " +
+                "cbuDEBITO TEXT NOT NULL, " +
+                "cbuCREDITO TEXT NOT NULL, " +
+                "IMPORTE REAL NOT NULL, " +
+                "CONCEPTO TEXT, " +
+                "MOTIVO TEXT, " +
+                "REFERENCIA TEXT, " +
+                "EMAIL TEXT, " +
+                "TITULAR TEXT NOT NULL);");
+    }
+
+    // Método para crear tablas de forma modular
+    private void crearTabla(String sql) {
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
         } catch (SQLException e) {
-            System.out.println("Error al crear la tabla transferencias: " + e.getMessage());
+            System.out.println("Error al crear la tabla: " + e.getMessage());
         }
     }
 }
-
-
-
-
-
-
-
-

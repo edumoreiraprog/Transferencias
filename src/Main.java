@@ -1,22 +1,17 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
         BaseDatos base = new BaseDatos();
-        CRUD crud = new CRUD();
-
         // Conectamos la base de datos
         base.conectar();
-        // le pasamos el statement de la base al crud para que pueda realizar las consultas SQL
-        crud.setStatement(base.getStatement());
+
+        // Instanciamos OperacionesBD y le pasamos la conexión de la base
+        // Esto para que pueda realizar las consultas SQL
+        OperacionesBD operaciones = new OperacionesBD(base.getConnection());
 
         // Algunas consultas
 
-        //crud.listarTitulares();
-        //crud.agregarTitular();
-        //crud.listarTitulares();
-        //crud.eliminarTitular();
-        //crud.listarTitulares();
+        operaciones.listarTitulares();
+        //operaciones.agregarTitular();
+        //operaciones.listarTitulares();
     }
 }

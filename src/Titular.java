@@ -1,4 +1,6 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Titular {
     // Atributos
@@ -9,33 +11,51 @@ public class Titular {
     private String cbu;
 
     // Setters
+    public String getCuil() {
+        return cuil;
+    }
+
     public void setCuil(String cuil) {
         this.cuil = cuil;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
-    public void setCbu(String cbu) {
-        this.cbu = cbu;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public String getNombre() {
+        return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    // Métodos
+    public String getEmail() {
+        return email;
+    }
 
-    // Inserta un titular en la tabla titulares con los datos actuales de la instancia
-    public void insertarSQL(Statement statement) {
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public String getCbu() {
+        return cbu;
+    }
+
+    public void setCbu(String cbu) {
+        this.cbu = cbu;
+    }
+
+    // Método para insertar un titular con los datos actuales de la instancia en la tabla titulares
+    public void insertarSQL(Connection connection) {
         String insertSQL = "INSERT INTO titulares (cuil, nombre, email, alias, cbu) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement pstmt = statement.getConnection().prepareStatement(insertSQL)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
             // Establecer los valores de los parámetros
             pstmt.setString(1, this.cuil);
             pstmt.setString(2, this.nombre);
@@ -50,5 +70,4 @@ public class Titular {
             System.out.println("Error al insertar el titular: " + e.getMessage());
         }
     }
-
 }

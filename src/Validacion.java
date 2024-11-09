@@ -1,82 +1,46 @@
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Validacion {
-    Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
-    // Métodos
-    public String validarCUIL() {
-        String cuil = "";
+    // Expresiones regulares
+    public static final String CUIL_REGEX = "^\\d{10}$";
+    private static final String CBU_REGEX = "^\\d{22}$";
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
 
-        while (true) {
-            System.out.print("Ingrese CUIL/CUIT: ");
-            cuil = scanner.nextLine();
-
-            if (cuil.length() == 10) {
-                if (cuil.matches("\\d+")) {
-                    return cuil;
-                } else {
-                    System.out.println("Error: La entrada debe contener solo números.");
-                }
-            } else {
-                System.out.println("Error: La longitud debe ser igual a 10 caracteres.");
-            }
-        }
+    // Métodos de validación
+    public static String validarCUIL() {
+        return validarEntrada("Ingrese CUIL/CUIT: ", CUIL_REGEX,
+                "Error: Debe contener solo 10 dígitos numéricos.");
     }
 
-    public String validarAlias(String mensaje) {
-        String alias = "";
-        while (true) {
-            System.out.print(mensaje);
-            alias = scanner.nextLine();
-
-            if (alias.length() <= 22 && !alias.isEmpty()) {
-                return alias;
-            } else if (alias.isEmpty()) {
-                System.out.println("Error: No se ingresó ningún valor. Intente de nuevo.");
-            } else {
-                System.out.println("Error: La longitud no puede ser más de 22 caracteres.");
-            }
-        }
+    public static String validarAlias(String mensaje) {
+        return validarLongitud("Alias", mensaje, 1, 22);
     }
 
-    public String validarCBU(String mensaje) {
-        String cbu = "";
-        while (true) {
-            System.out.print(mensaje);
-            cbu = scanner.nextLine();
-
-            if (cbu.length() == 22) {
-                if (cbu.matches("\\d+")) {
-                    return cbu;
-                } else {
-                    System.out.println("Error: La entrada debe contener solo números.");
-                }
-            } else {
-                System.out.println("Error: La longitud debe ser igual a 22 caracteres.");
-            }
-        }
+    public static String validarCBU(String mensaje) {
+        return validarEntrada(mensaje, CBU_REGEX,
+                "Error: Debe contener exactamente 22 dígitos numéricos.");
     }
 
-    private double validarIMPORTE(){
-        double importeActual = 0;
-
+    public static double validarImporte() {
         while (true) {
             System.out.print("Ingrese IMPORTE: ");
             String input = scanner.nextLine();
 
             if (input.isEmpty()) {
                 System.out.println("Error: No se ingresó ningún valor. Intente de nuevo.");
-                continue; // Volver al inicio del bucle
+                continue;
             }
 
             try {
-                importeActual = Double.parseDouble(input);
-
-                if (importeActual <= 0) {
-                    System.out.println("Error: el IMPORTE no puede ser igual o menor a 0.");
+                // Transformamos a double
+                double importe = Double.parseDouble(input);
+                if (importe > 0) {
+                    return importe;
                 } else {
-                    System.out.println("El IMPORTE ingresado es: " + importeActual);
-                    return importeActual;
+                    System.out.println("Error: el IMPORTE debe ser mayor a 0.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Error: Entrada no válida. Debe ser un número.");
@@ -84,39 +48,15 @@ public class Validacion {
         }
     }
 
-    public String validarCONCEPTO(){
-        String conceptoValido = "";
-
-        while (true) {
-            System.out.print("Ingrese el CONCEPTO: ");
-            conceptoValido = scanner.nextLine();
-
-            if (conceptoValido.length() < 50 && conceptoValido.length() != 0) {
-                System.out.println("La longitud de la entrada es: " + conceptoValido.length());
-                System.out.println("El dato ingresado es: "+conceptoValido);
-                return conceptoValido;
-            } else if (conceptoValido.isEmpty()) {
-                System.out.println("Error: No se ingresó ningún valor. Intente de nuevo.");
-            } else {
-                System.out.println("Error: En la longitud del CONCEPTO.");
-            }
-        }
+    public static String validarConcepto() {
+        return validarLongitud("Concepto", "Ingrese el CONCEPTO: ", 1, 50);
     }
 
-    // Revisar validarMOTIVO
-    public String validarMOTIVO() {
+    public static String validarMotivo() {
         final String[] MOTIVOS = {
-                "ALQ (Alquileres)",
-                "CUO (Cuotas)",
-                "EXP (Expensas)",
-                "FAC (Facturas)",
-                "PRE (Préstamos)",
-                "SEG (Seguros)",
-                "HON (Honorarios)",
-                "VAR (Varios)"
+                "ALQ (Alquileres)", "CUO (Cuotas)", "EXP (Expensas)", "FAC (Facturas)",
+                "PRE (Préstamos)", "SEG (Seguros)", "HON (Honorarios)", "VAR (Varios)"
         };
-
-        String motivoSeleccionado = null;
 
         while (true) {
             System.out.println("\nSeleccione el número del MOTIVO (o 'salir' para terminar): ");
@@ -126,17 +66,11 @@ public class Validacion {
 
             String input = scanner.nextLine();
 
-            if (input.equalsIgnoreCase("salir")) {
-                System.out.println("Saliendo del programa...");
-                return null;
-            }
-
             try {
                 int opcion = Integer.parseInt(input);
                 if (opcion >= 1 && opcion <= MOTIVOS.length) {
-                    motivoSeleccionado = MOTIVOS[opcion - 1].substring(0, 3); // Toma las primeras 3 letras
                     System.out.println("Has seleccionado " + MOTIVOS[opcion - 1]);
-                    return motivoSeleccionado;
+                    return MOTIVOS[opcion - 1].substring(0, 3); // Retorna las primeras 3 letras
                 } else {
                     System.out.println("Número no válido, inténtelo de nuevo.");
                 }
@@ -146,54 +80,44 @@ public class Validacion {
         }
     }
 
-    public String validarREFERENCIA(){
-        String referenciaValido = "";
+    public static String validarReferencia() {
+        return validarLongitud("Referencia", "Ingrese la REFERENCIA: ", 1, 30);
+    }
 
+    public static String validarEmail() {
+        return validarEntrada("Ingrese el EMAIL: ", EMAIL_REGEX,
+                "Error: Formato de correo electrónico no válido.");
+    }
+
+    public static String validarTitular() {
+        return validarLongitud("Titular", "Ingrese el TITULAR: ", 1, 50);
+    }
+
+    // Métodos privados para validación modular
+    private static String validarEntrada(String mensaje, String regex, String error) {
         while (true) {
-            System.out.print("Ingrese la REFERENCIA: ");
-            referenciaValido = scanner.nextLine();
+            System.out.print(mensaje);
+            String input = scanner.nextLine();
 
-            if (referenciaValido.length() < 30 && referenciaValido.length() != 0) {
-                System.out.println("La longitud de la entrada es: " + referenciaValido.length());
-                return referenciaValido;
-            } else if (referenciaValido.isEmpty()) {
-                System.out.println("Error: No se ingresó ningún valor. Intente de nuevo.");
+            if (Pattern.matches(regex, input)) {
+                return input;
             } else {
-                System.out.println("Error: En la longitud de la REFERENCIA.");
+                System.out.println(error);
             }
         }
     }
 
-    public String validarEMAIL(){
-        String email = "";
-
+    private static String validarLongitud(String nombreCampo, String mensaje, int min, int max) {
         while (true) {
-            System.out.print("Ingrese el EMAIL: ");
-            email = scanner.nextLine();
+            System.out.print(mensaje);
+            String input = scanner.nextLine();
 
-            if (email.length() < 50 && email.length() != 0) {
-                return email;
-            } else if (email.isEmpty()) {
+            if (!input.isEmpty() && input.length() >= min && input.length() <= max) {
+                return input;
+            } else if (input.isEmpty()) {
                 System.out.println("Error: No se ingresó ningún valor. Intente de nuevo.");
             } else {
-                System.out.println("Error: En la longitud del EMAIL.");
-            }
-        }
-    }
-
-    public String validarTITULAR(){
-        String titular = "";
-
-        while (true) {
-            System.out.print("Ingrese el TITULAR: ");
-            titular = scanner.nextLine();
-
-            if (titular.length() < 50 && titular.length() != 0) {
-                return titular;
-            } else if (titular.isEmpty()) {
-                System.out.println("Error: No se ingresó ningún valor. Intente de nuevo.");
-            } else {
-                System.out.println("Error: En la longitud de TITULARES.");
+                System.out.printf("Error: La longitud del %s debe estar entre %d y %d caracteres.%n", nombreCampo, min, max);
             }
         }
     }
