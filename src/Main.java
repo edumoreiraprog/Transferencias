@@ -13,5 +13,9 @@ public class Main {
         operaciones.listarTitulares();
         //operaciones.agregarTitular();
         //operaciones.listarTitulares();
+        //operaciones.eliminarTitular();
+        System.out.println("");
+        //operaciones.insertarTransferencia(operaciones.crearTransferencia("edu.bien", "facu.facundo"));
+        operaciones.listarTransferencias();
     }
 }

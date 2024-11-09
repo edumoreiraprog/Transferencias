@@ -12,6 +12,10 @@ public class Transferencia {
     private String titular;
 
     // Constructor
+
+    public Transferencia() {
+    }
+
     public Transferencia(String aliasDEBITO, String aliasCREDITO, String cbuDEBITO, String cbuCREDITO, double importe, String concepto, String motivo, String referencia, String email, String titular) {
         this.aliasDEBITO = aliasDEBITO;
         this.aliasCREDITO = aliasCREDITO;
