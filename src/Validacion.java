@@ -5,7 +5,7 @@ public class Validacion {
     private static final Scanner scanner = new Scanner(System.in);
 
     // Expresiones regulares
-    public static final String CUIL_REGEX = "^\\d{10}$";
+    private static final String CUIL_REGEX = "^\\d{11}$";
     private static final String CBU_REGEX = "^\\d{22}$";
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
 
@@ -91,6 +91,24 @@ public class Validacion {
 
     public static String validarTitular() {
         return validarLongitud("Titular", "Ingrese el TITULAR: ", 1, 50);
+    }
+
+    public static int validarOpcionMenu(int min, int max) {
+        while (true) {
+            System.out.print("Seleccione una opción del menú: ");
+            String input = scanner.nextLine();
+
+            try {
+                int opcion = Integer.parseInt(input);
+                if (opcion >= min && opcion <= max) {
+                    return opcion;
+                } else {
+                    System.out.println("Error: La opción debe estar entre " + min + " y " + max + ".");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Entrada no válida. Debe ser un número.");
+            }
+        }
     }
 
     // Métodos privados para validación modular

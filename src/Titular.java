@@ -9,6 +9,7 @@ public class Titular {
     private String email;
     private String alias;
     private String cbu;
+    private String referencia;
 
     // Setters
     public String getCuil() {
@@ -51,9 +52,17 @@ public class Titular {
         this.cbu = cbu;
     }
 
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+
     // Método para insertar un titular con los datos actuales de la instancia en la tabla titulares
     public void insertarSQL(Connection connection) {
-        String insertSQL = "INSERT INTO titulares (cuil, nombre, email, alias, cbu) VALUES (?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO titulares (cuil, nombre, email, alias, cbu, referencia) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
             // Establecer los valores de los parámetros
@@ -62,6 +71,7 @@ public class Titular {
             pstmt.setString(3, this.email);
             pstmt.setString(4, this.alias);
             pstmt.setString(5, this.cbu);
+            pstmt.setString(6, this.referencia);
 
             // Ejecutar la inserción
             pstmt.executeUpdate();

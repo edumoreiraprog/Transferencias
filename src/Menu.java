@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner sc = new Scanner(System.in);
-    //CRUD crud = new CRUD();
+
     Statement statement = null;
 
     // Setters
@@ -20,6 +20,7 @@ public class Menu {
 
             switch (op) {
                 case 1:
+
                     menuTitulares();
 
                     //System.out.print("\nPresione cualquier tecla para continuar...");

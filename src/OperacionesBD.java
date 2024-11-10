@@ -17,19 +17,23 @@ public class OperacionesBD {
 
     // Listar todos los titulares de la base de datos
     public void listarTitulares() {
-        String consulta = "SELECT * FROM titulares";
+        String consulta = "SELECT * FROM Titulares";
         try (PreparedStatement stmt = conexion.prepareStatement(consulta);
              ResultSet resultado = stmt.executeQuery()) {
 
+            System.out.println("===== Lista de Titulares =====");
             while (resultado.next()) {
-                String cuil = resultado.getString("cuil");
-                String nombre = resultado.getString("nombre");
-                String email = resultado.getString("email");
-                String alias = resultado.getString("alias");
-                String cbu = resultado.getString("cbu");
+                String id = resultado.getString("TitularesID");
+                String cuil = resultado.getString("Cuil");
+                String nombre = resultado.getString("Nombre");
+                String email = resultado.getString("Email");
+                String alias = resultado.getString("Alias");
+                String cbu = resultado.getString("Cbu");
+                String referencia = resultado.getString("Referencia");
 
-                System.out.println("CUIL: " + cuil + ", Nombre: " + nombre + ", Email: " + email + ", Alias: " + alias + ", CBU: " + cbu);
+                System.out.println("ID: "+ id + ", CUIL: " + cuil + ", Nombre: " + nombre + ", Email: " + email + ", Alias: " + alias + ", CBU: " + cbu + ", REFERENCIA: " + referencia);
             }
+            System.out.println("==============================");
         } catch (SQLException e) {
             System.out.println("Error al listar titulares: " + e.getMessage());
         }
@@ -44,14 +48,18 @@ public class OperacionesBD {
         titular.setEmail(Validacion.validarEmail());
         titular.setAlias(Validacion.validarAlias("Ingrese ALIAS CBU: "));
         titular.setCbu(Validacion.validarCBU("Ingrese CBU: "));
+        titular.setReferencia(Validacion.validarReferencia());
 
-        String consulta = "INSERT INTO titulares (cuil, nombre, email, alias, cbu) VALUES (?, ?, ?, ?, ?)";
+        String consulta = "INSERT INTO titulares (cuil, nombre, email, alias, cbu, referencia) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conexion.prepareStatement(consulta)) {
             stmt.setString(1, titular.getCuil());
             stmt.setString(2, titular.getNombre());
             stmt.setString(3, titular.getEmail());
             stmt.setString(4, titular.getAlias());
             stmt.setString(5, titular.getCbu());
+            stmt.setString(6, titular.getReferencia());
+
+            // Ejecuta la consulta
             stmt.executeUpdate();
             System.out.println("Titular agregado exitosamente.");
         } catch (SQLException e) {
@@ -79,6 +87,7 @@ public class OperacionesBD {
         }
     }
 
+    /*
     public Transferencia crearTransferencia(String aliasDebito, String aliasCredito) {
         Transferencia transferencia = null;
 
@@ -140,10 +149,77 @@ public class OperacionesBD {
         return transferencia;
     }
 
+     */
+
+    public Transferencia crearTransferencia() {
+        Transferencia transferencia = null;
+
+        // Consulta SQL para obtener los datos del titular que envía el dinero
+        String sqlDebito = "SELECT Referencia, cbu FROM Titulares WHERE Referencia = ?";
+        String sqlCredito = "SELECT Referencia, cbu, email, nombre FROM Titulares WHERE Referencia = ?";
+
+        try (
+                PreparedStatement pstmtDebito = conexion.prepareStatement(sqlDebito);
+                PreparedStatement pstmtCredito = conexion.prepareStatement(sqlCredito);
+        ) {
+            System.out.println("Ingrese Referencia Debito: ");
+            String refDebito = scanner.nextLine();
+
+            // Buscar datos del titular de débito
+            pstmtDebito.setString(1, refDebito);
+            ResultSet rsDebito = pstmtDebito.executeQuery();
+
+            if (rsDebito.next()) {
+                String aliasDEBITO = rsDebito.getString("Referencia");
+                String cbuDEBITO = rsDebito.getString("Cbu");
+
+                System.out.println("Ingrese Referencia Crédito: ");
+                String refCredito = scanner.nextLine();
+
+                // Buscar datos del titular de crédito
+                pstmtCredito.setString(1, refCredito);
+                ResultSet rsCredito = pstmtCredito.executeQuery();
+
+                if (rsCredito.next()) {
+                    String aliasCREDITO = rsCredito.getString("Referencia");
+                    String cbuCREDITO = rsCredito.getString("Cbu");
+                    String email = rsCredito.getString("Email");
+                    String titular = rsCredito.getString("Nombre");
+
+                    // Pedir datos restantes al usuario
+                    Scanner scanner = new Scanner(System.in);
+
+                    double importe = Validacion.validarImporte();
+                    scanner.nextLine();  // Consumir la nueva línea
+
+                    String concepto = Validacion.validarConcepto();
+
+                    System.out.print("Ingrese el motivo: ");
+                    String motivo = Validacion.validarMotivo();
+
+                    System.out.print("Ingrese la referencia: ");
+                    String referencia = Validacion.validarReferencia();
+
+                    // Crear la instancia de Transferencia
+                    transferencia = new Transferencia(aliasDEBITO, aliasCREDITO, cbuDEBITO, cbuCREDITO,
+                            importe, concepto, motivo, referencia, email, titular);
+                } else {
+                    System.out.println("No se encontró el titular de crédito con la referencia proporcionada.");
+                }
+            } else {
+                System.out.println("No se encontró el titular de débito la referencia proporcionada.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener datos de la base: " + e.getMessage());
+        }
+
+        return transferencia;
+    }
+
     // Método para insertar la transferencia en la base de datos
     public void insertarTransferencia(Transferencia transferencia) {
-        String sql = "INSERT INTO transferencias (aliasDEBITO, aliasCREDITO, cbuDEBITO, cbuCREDITO, " +
-                "IMPORTE, CONCEPTO, MOTIVO, REFERENCIA, EMAIL, TITULAR) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Transferencias (AliasDebito, AliasCredito, CbuDebito, CbuCredito, " +
+                "Importe, Concepto, Motivo, Referencia, Email, Titular) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setString(1, transferencia.getAliasDEBITO());
@@ -166,7 +242,7 @@ public class OperacionesBD {
 
     // Listar todas las transferencias de la base de datos
     public void listarTransferencias() {
-        String consulta = "SELECT * FROM transferencias";
+        String consulta = "SELECT * FROM Transferencias";
         try (PreparedStatement stmt = conexion.prepareStatement(consulta);
              ResultSet resultado = stmt.executeQuery()) {
 
@@ -182,10 +258,10 @@ public class OperacionesBD {
                 String email = resultado.getString("email");
                 String titular = resultado.getString("titular");
 
-                System.out.println("Alias Débito: " + aliasDEBITO + ", Alias Crédito: " + aliasCREDITO);
-                System.out.println("CBU Débito: " + cbuDEBITO + ", CBU Crédito: " + cbuCREDITO);
-                System.out.println("Importe: " + importe + ", Concepto: " + concepto + ", Motivo: " + motivo);
-                System.out.println("Referencia: " + referencia + ", Email: " + email + ", Titular: " + titular);
+                System.out.println("Alias Débito: " + aliasDEBITO + ", \nAlias Crédito: " + aliasCREDITO);
+                System.out.println("CBU Débito: " + cbuDEBITO + ", \nCBU Crédito: " + cbuCREDITO);
+                System.out.println("Importe: " + importe + ", \nConcepto: " + concepto + ", \nMotivo: " + motivo);
+                System.out.println("Referencia: " + referencia + ", \nEmail: " + email + ", \nTitular: " + titular);
                 System.out.println("----------------------------------------");
             }
         } catch (SQLException e) {

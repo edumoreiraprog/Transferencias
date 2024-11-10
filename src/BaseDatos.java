@@ -8,6 +8,8 @@ public class BaseDatos {
     private static final String URL = "jdbc:sqlite:data/transferencias.sqlite";
     private Connection conn = null;
 
+
+
     // Conectar a la base de datos
     public void conectar() {
         try {
@@ -38,25 +40,27 @@ public class BaseDatos {
 
     // Inicializar tablas
     private void inicializarTablas() {
-        crearTabla("CREATE TABLE IF NOT EXISTS titulares (" +
-                "cuil TEXT PRIMARY KEY, " +
-                "nombre TEXT NOT NULL, " +
-                "email TEXT NOT NULL, " +
-                "alias TEXT NOT NULL, " +
-                "cbu TEXT NOT NULL);");
+        crearTabla("CREATE TABLE IF NOT EXISTS Titulares (" +
+                "TitularesID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "Cuil TEXT NOT NULL, " +
+                "Nombre TEXT NOT NULL, " +
+                "Email TEXT NOT NULL, " +
+                "Alias TEXT NOT NULL, " +
+                "Cbu TEXT NOT NULL, " +
+                "Referencia TEXT NOT NULL);");
 
-        crearTabla("CREATE TABLE IF NOT EXISTS transferencias (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "aliasDEBITO TEXT NOT NULL, " +
-                "aliasCREDITO TEXT NOT NULL, " +
-                "cbuDEBITO TEXT NOT NULL, " +
-                "cbuCREDITO TEXT NOT NULL, " +
-                "IMPORTE REAL NOT NULL, " +
-                "CONCEPTO TEXT, " +
-                "MOTIVO TEXT, " +
-                "REFERENCIA TEXT, " +
-                "EMAIL TEXT, " +
-                "TITULAR TEXT NOT NULL);");
+        crearTabla("CREATE TABLE IF NOT EXISTS Transferencias (" +
+                "TransferenciasID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "AliasDebito TEXT NOT NULL, " +
+                "AliasCredito TEXT NOT NULL, " +
+                "CbuDebito TEXT NOT NULL, " +
+                "CbuCredito TEXT NOT NULL, " +
+                "Importe REAL NOT NULL, " +
+                "Concepto TEXT, " +
+                "Motivo TEXT, " +
+                "Referencia TEXT, " +
+                "Email TEXT, " +
+                "Titular TEXT NOT NULL);");
     }
 
     // Método para crear tablas de forma modular
