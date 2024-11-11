@@ -81,7 +81,7 @@ public class Validacion {
     }
 
     public static String validarReferencia() {
-        return validarLongitud("Referencia", "Ingrese la REFERENCIA: ", 1, 30);
+        return validarLongitud("Referencia", "Ingrese la REFERENCIA: ", 1, 12);
     }
 
     public static String validarEmail() {
@@ -90,7 +90,7 @@ public class Validacion {
     }
 
     public static String validarTitular() {
-        return validarLongitud("Titular", "Ingrese el TITULAR: ", 1, 50);
+        return validarLongitud("Titular", "Ingrese el TITULAR: ", 1, 1);
     }
 
     public static int validarOpcionMenu(int min, int max) {

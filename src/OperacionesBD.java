@@ -31,7 +31,8 @@ public class OperacionesBD {
                 String cbu = resultado.getString("Cbu");
                 String referencia = resultado.getString("Referencia");
 
-                System.out.println("ID: "+ id + ", CUIL: " + cuil + ", Nombre: " + nombre + ", Email: " + email + ", Alias: " + alias + ", CBU: " + cbu + ", REFERENCIA: " + referencia);
+                //System.out.println("ID: "+ id + ", CUIL: " + cuil + ", Nombre: " + nombre + ", Email: " + email + ", Alias: " + alias + ", CBU: " + cbu + ", REFERENCIA: " + referencia);
+                System.out.println(cuil + "\t" + nombre + "\t" + email + "\t" + referencia);
             }
             System.out.println("==============================");
         } catch (SQLException e) {
@@ -155,8 +156,8 @@ public class OperacionesBD {
         Transferencia transferencia = null;
 
         // Consulta SQL para obtener los datos del titular que envía el dinero
-        String sqlDebito = "SELECT Referencia, cbu FROM Titulares WHERE Referencia = ?";
-        String sqlCredito = "SELECT Referencia, cbu, email, nombre FROM Titulares WHERE Referencia = ?";
+        String sqlDebito = "SELECT Alias, Cbu FROM Titulares WHERE Referencia = ?";
+        String sqlCredito = "SELECT Alias, Cbu, Email, Nombre FROM Titulares WHERE Referencia = ?";
 
         try (
                 PreparedStatement pstmtDebito = conexion.prepareStatement(sqlDebito);
@@ -170,7 +171,7 @@ public class OperacionesBD {
             ResultSet rsDebito = pstmtDebito.executeQuery();
 
             if (rsDebito.next()) {
-                String aliasDEBITO = rsDebito.getString("Referencia");
+                String aliasDEBITO = rsDebito.getString("Alias");
                 String cbuDEBITO = rsDebito.getString("Cbu");
 
                 System.out.println("Ingrese Referencia Crédito: ");
@@ -181,7 +182,7 @@ public class OperacionesBD {
                 ResultSet rsCredito = pstmtCredito.executeQuery();
 
                 if (rsCredito.next()) {
-                    String aliasCREDITO = rsCredito.getString("Referencia");
+                    String aliasCREDITO = rsCredito.getString("Alias");
                     String cbuCREDITO = rsCredito.getString("Cbu");
                     String email = rsCredito.getString("Email");
                     String titular = rsCredito.getString("Nombre");
@@ -258,10 +259,10 @@ public class OperacionesBD {
                 String email = resultado.getString("email");
                 String titular = resultado.getString("titular");
 
-                System.out.println("Alias Débito: " + aliasDEBITO + ", \nAlias Crédito: " + aliasCREDITO);
-                System.out.println("CBU Débito: " + cbuDEBITO + ", \nCBU Crédito: " + cbuCREDITO);
-                System.out.println("Importe: " + importe + ", \nConcepto: " + concepto + ", \nMotivo: " + motivo);
-                System.out.println("Referencia: " + referencia + ", \nEmail: " + email + ", \nTitular: " + titular);
+                System.out.println("Alias Débito: " + aliasDEBITO + " \nAlias Crédito: " + aliasCREDITO);
+                System.out.println("CBU Débito: " + cbuDEBITO + " \nCBU Crédito: " + cbuCREDITO);
+                System.out.println("Importe: " + importe + " \nConcepto: " + concepto + " \nMotivo: " + motivo);
+                System.out.println("Referencia: " + referencia + " \nEmail: " + email + " \nTitular: " + titular);
                 System.out.println("----------------------------------------");
             }
         } catch (SQLException e) {

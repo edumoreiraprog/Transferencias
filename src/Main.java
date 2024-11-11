@@ -12,14 +12,12 @@ public class Main {
         OperacionesBD operaciones = new OperacionesBD(base.getConnection());
 
         // Algunas consultas
-
         operaciones.listarTitulares();
-        //operaciones.agregarTitular();
         //operaciones.agregarTitular();
         //operaciones.listarTitulares();
         //operaciones.eliminarTitular();
         //System.out.println(" ");
-        operaciones.insertarTransferencia(operaciones.crearTransferencia());
+        //operaciones.insertarTransferencia(operaciones.crearTransferencia());
         //operaciones.listarTransferencias();
 
         ExportarArchivo exportarArchivo = new ExportarArchivo();
@@ -121,12 +119,4 @@ public class Main {
         System.out.println("===============================");
         System.out.println("Seleccione una opción: ");
     }
-
-    public static void limpiarConsola() {
-        for (int i = 0; i < 50; i++) {
-            System.out.println();
-        }
-    }
-
-
 }

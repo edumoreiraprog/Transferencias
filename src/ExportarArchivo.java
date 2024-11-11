@@ -35,11 +35,11 @@ public class ExportarArchivo {
                 String motivo = rs.getString("Motivo");
                 String referencia = rs.getString("Referencia");
                 String email = rs.getString("Email");
-                String titular = rs.getString("Titular");
+                //String titular = rs.getString("Titular");
 
                 // Generar la fila con el formato específico
                 String filaData = String.format("%22s%22s"+espacios(44)+"%012d%-50s%-3s%-12s%-50s%-1s\n",
-                        cbuDEBITO, cbuCREDITO, (int) (importeActual * 100), concepto, motivo, referencia, email, titular);
+                        cbuDEBITO, cbuCREDITO, (int) (importeActual * 100), concepto, motivo, referencia, email, "1");
 
                 // Acumula la fila
                 datos.append(filaData);
