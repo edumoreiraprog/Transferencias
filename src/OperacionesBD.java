@@ -31,8 +31,7 @@ public class OperacionesBD {
                 String cbu = resultado.getString("Cbu");
                 String referencia = resultado.getString("Referencia");
 
-                //System.out.println("ID: "+ id + ", CUIL: " + cuil + ", Nombre: " + nombre + ", Email: " + email + ", Alias: " + alias + ", CBU: " + cbu + ", REFERENCIA: " + referencia);
-                System.out.println(cuil + "\t" + nombre + "\t" + email + "\t" + referencia);
+                System.out.println("ID: "+ id + ", CUIL: " + cuil + ", Nombre: " + nombre + ", Email: " + email + ", Alias: " + alias + ", CBU: " + cbu + ", REFERENCIA: " + referencia);
             }
             System.out.println("==============================");
         } catch (SQLException e) {
@@ -70,7 +69,7 @@ public class OperacionesBD {
 
     // Eliminar un titular por CUIL de la base
     public void eliminarTitular() {
-        System.out.print("Ingrese el CUIL del titular a eliminar: ");
+        System.out.print("Ingrese el CUIL del Titular a eliminar: ");
         String cuil = scanner.nextLine();
 
         String consulta = "DELETE FROM titulares WHERE cuil = ?";
@@ -85,6 +84,76 @@ public class OperacionesBD {
             }
         } catch (SQLException e) {
             System.out.println("Error al eliminar titular: " + e.getMessage());
+        }
+    }
+
+    public void buscarTitular(){
+        System.out.print("Ingrese el Cuil del titular a buscar: ");
+        String cuilTitular = scanner.nextLine();
+
+        String consulta = "SELECT * FROM Titulares WHERE cuil = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(consulta)){
+            stmt.setString(1, cuilTitular);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("nombre");
+                    String cbu = rs.getString("Cbu");
+                    
+                    System.out.println("Titular encontrado: ");
+                    System.out.println("ID: " + id);
+                    System.out.println("Nombre: " + nombre);
+                    System.out.println("Cbu: " + cbu);
+                } else {
+                    System.out.println("No se encontró un titular con el Cuil " + cuilTitular);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al buscar el titular: " + e.getMessage());
+        }
+    }
+
+    public void actualizarTitular(){
+        System.out.print("Ingrese el Cuil del Titular a modificar: ");
+        String modificarCuil = scanner.nextLine();
+        
+        System.out.print("Ingrese el nuevo Nombre: ");
+        String nuevoNombre = scanner.nextLine();
+        
+        System.out.print("Ingrese el nuevo Email: ");
+        String nuevoEmail = scanner.nextLine();
+        
+        System.out.print("Ingrese el nuevo Alias: ");
+        String nuevoAlias = scanner.nextLine();
+        
+        System.out.print("Ingrese el nuevo CBU: ");
+        String nuevoCbu = scanner.nextLine();
+        
+        System.out.print("Ingrese la nueva Referencia: ");
+        String nuevaReferencia = scanner.nextLine();
+
+        String consulta = "UPDATE Titulares SET nombre = ?, email = ?, alias = ?, cbu = ?, referencia = ? WHERE cuil = ?";
+
+        try (PreparedStatement stmt = conexion.prepareStatement(consulta)) {
+            stmt.setString(1, nuevoNombre);  
+            stmt.setString(2, nuevoEmail); 
+            stmt.setString(3, nuevoAlias);
+            stmt.setString(4, nuevoCbu);
+            stmt.setString(5, nuevaReferencia);
+            
+            // Ejecutamos la consulta de actualización
+            int filasAfectadas = stmt.executeUpdate();
+            
+            // Verificamos si la actualización fue exitosa
+            if (filasAfectadas > 0) {
+                System.out.println("Titular actualizado con éxito.");
+            } else {
+                System.out.println("No se encontró un titular con el Cuil " + modificarCuil);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error al modificar el titular: " + e.getMessage());
         }
     }
 
@@ -156,8 +225,8 @@ public class OperacionesBD {
         Transferencia transferencia = null;
 
         // Consulta SQL para obtener los datos del titular que envía el dinero
-        String sqlDebito = "SELECT Alias, Cbu FROM Titulares WHERE Referencia = ?";
-        String sqlCredito = "SELECT Alias, Cbu, Email, Nombre FROM Titulares WHERE Referencia = ?";
+        String sqlDebito = "SELECT Referencia, cbu FROM Titulares WHERE Referencia = ?";
+        String sqlCredito = "SELECT Referencia, cbu, email, nombre FROM Titulares WHERE Referencia = ?";
 
         try (
                 PreparedStatement pstmtDebito = conexion.prepareStatement(sqlDebito);
@@ -171,7 +240,7 @@ public class OperacionesBD {
             ResultSet rsDebito = pstmtDebito.executeQuery();
 
             if (rsDebito.next()) {
-                String aliasDEBITO = rsDebito.getString("Alias");
+                String aliasDEBITO = rsDebito.getString("Referencia");
                 String cbuDEBITO = rsDebito.getString("Cbu");
 
                 System.out.println("Ingrese Referencia Crédito: ");
@@ -182,7 +251,7 @@ public class OperacionesBD {
                 ResultSet rsCredito = pstmtCredito.executeQuery();
 
                 if (rsCredito.next()) {
-                    String aliasCREDITO = rsCredito.getString("Alias");
+                    String aliasCREDITO = rsCredito.getString("Referencia");
                     String cbuCREDITO = rsCredito.getString("Cbu");
                     String email = rsCredito.getString("Email");
                     String titular = rsCredito.getString("Nombre");
@@ -259,10 +328,10 @@ public class OperacionesBD {
                 String email = resultado.getString("email");
                 String titular = resultado.getString("titular");
 
-                System.out.println("Alias Débito: " + aliasDEBITO + " \nAlias Crédito: " + aliasCREDITO);
-                System.out.println("CBU Débito: " + cbuDEBITO + " \nCBU Crédito: " + cbuCREDITO);
-                System.out.println("Importe: " + importe + " \nConcepto: " + concepto + " \nMotivo: " + motivo);
-                System.out.println("Referencia: " + referencia + " \nEmail: " + email + " \nTitular: " + titular);
+                System.out.println("Alias Débito: " + aliasDEBITO + ", \nAlias Crédito: " + aliasCREDITO);
+                System.out.println("CBU Débito: " + cbuDEBITO + ", \nCBU Crédito: " + cbuCREDITO);
+                System.out.println("Importe: " + importe + ", \nConcepto: " + concepto + ", \nMotivo: " + motivo);
+                System.out.println("Referencia: " + referencia + ", \nEmail: " + email + ", \nTitular: " + titular);
                 System.out.println("----------------------------------------");
             }
         } catch (SQLException e) {
