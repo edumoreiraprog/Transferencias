@@ -46,8 +46,8 @@ public class BaseDatos {
                 "Nombre TEXT NOT NULL, " +
                 "Email TEXT NOT NULL, " +
                 "Alias TEXT NOT NULL, " +
-                "Cbu TEXT NOT NULL, " +
-                "Referencia TEXT NOT NULL);");
+                "Cbu TEXT UNIQUE NOT NULL, " +
+                "Referencia TEXT UNIQUE NOT NULL);");
 
         crearTabla("CREATE TABLE IF NOT EXISTS Transferencias (" +
                 "TransferenciasID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -56,9 +56,9 @@ public class BaseDatos {
                 "CbuDebito TEXT NOT NULL, " +
                 "CbuCredito TEXT NOT NULL, " +
                 "Importe REAL NOT NULL, " +
-                "Concepto TEXT, " +
+                "Concepto TEXT UNIQUE, " +
                 "Motivo TEXT, " +
-                "Referencia TEXT, " +
+                "Referencia TEXTNOT NULL, " +
                 "Email TEXT, " +
                 "Titular TEXT NOT NULL);");
     }

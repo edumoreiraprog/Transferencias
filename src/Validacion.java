@@ -12,7 +12,7 @@ public class Validacion {
     // Métodos de validación
     public static String validarCUIL() {
         return validarEntrada("Ingrese CUIL/CUIT: ", CUIL_REGEX,
-                "Error: Debe contener solo 10 dígitos numéricos.");
+                "Error: Debe contener solo 11 dígitos numéricos.");
     }
 
     public static String validarAlias(String mensaje) {
@@ -90,7 +90,7 @@ public class Validacion {
     }
 
     public static String validarTitular() {
-        return validarLongitud("Titular", "Ingrese el TITULAR: ", 1, 1);
+        return validarLongitud("Titular", "Ingrese el TITULAR: ", 1, 30);
     }
 
     public static int validarOpcionMenu(int min, int max) {
