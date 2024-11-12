@@ -94,8 +94,6 @@ public class Main {
                         scanner.nextLine(); // Limpiar el buffer
                         switch (opArchivo) {
                             case 1:
-                                //Generar archivo .txt para transferencias
-                                //exportarArchivo.exportar("Creacion01.txt");
                                 exportarArchivo.exportar();
                                 abrirPaginaDescargas();
                                 break;

@@ -96,9 +96,6 @@ public class OperacionesBD {
     }
 
     public void buscarTitular(String referencia){
-        //System.out.print("Ingrese la Referencia del titular a buscar: ");
-        //String referencia = Validacion.validarReferencia();
-
         String consulta = "SELECT * FROM Titulares WHERE Referencia = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(consulta)){
             stmt.setString(1, referencia);
@@ -154,70 +151,6 @@ public class OperacionesBD {
             System.out.println("Error al modificar el titular: " + e.getMessage());
         }
     }
-
-    /*
-    public Transferencia crearTransferencia(String aliasDebito, String aliasCredito) {
-        Transferencia transferencia = null;
-
-        // Consulta SQL para obtener los datos del titular que envía el dinero
-        String sqlDebito = "SELECT alias, cbu FROM titulares WHERE alias = ?";
-        String sqlCredito = "SELECT alias, cbu, email, nombre FROM titulares WHERE alias = ?";
-
-        try (
-                PreparedStatement pstmtDebito = conexion.prepareStatement(sqlDebito);
-                PreparedStatement pstmtCredito = conexion.prepareStatement(sqlCredito);
-        ) {
-            // Buscar datos del titular de débito
-            pstmtDebito.setString(1, aliasDebito);
-            ResultSet rsDebito = pstmtDebito.executeQuery();
-
-            if (rsDebito.next()) {
-                String aliasDEBITO = rsDebito.getString("alias");
-                String cbuDEBITO = rsDebito.getString("cbu");
-
-                // Buscar datos del titular de crédito
-                pstmtCredito.setString(1, aliasCredito);
-                ResultSet rsCredito = pstmtCredito.executeQuery();
-
-                if (rsCredito.next()) {
-                    String aliasCREDITO = rsCredito.getString("alias");
-                    String cbuCREDITO = rsCredito.getString("cbu");
-                    String email = rsCredito.getString("email");
-                    String titular = rsCredito.getString("nombre");
-
-                    // Pedir datos restantes al usuario
-                    Scanner scanner = new Scanner(System.in);
-
-                    System.out.print("Ingrese el importe: ");
-                    double importe = Validacion.validarImporte();
-                    scanner.nextLine();  // Consumir la nueva línea
-
-                    System.out.print("Ingrese el concepto: ");
-                    String concepto = Validacion.validarConcepto();
-
-                    System.out.print("Ingrese el motivo: ");
-                    String motivo = Validacion.validarMotivo();
-
-                    System.out.print("Ingrese la referencia: ");
-                    String referencia = Validacion.validarReferencia();
-
-                    // Crear la instancia de Transferencia
-                    transferencia = new Transferencia(aliasDEBITO, aliasCREDITO, cbuDEBITO, cbuCREDITO,
-                            importe, concepto, motivo, referencia, email, titular);
-                } else {
-                    System.out.println("No se encontró el titular de crédito con el alias proporcionado.");
-                }
-            } else {
-                System.out.println("No se encontró el titular de débito con el alias proporcionado.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al obtener datos de la base: " + e.getMessage());
-        }
-
-        return transferencia;
-    }
-
-     */
 
     public Transferencia crearTransferencia() {
         Transferencia transferencia = null;

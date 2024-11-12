@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -60,48 +59,4 @@ public class ExportarArchivo {
             System.out.println("Error en consulta SQL: " + e.getMessage());
         }
     }
-
-    /*
-    public void exportar(String filename) {
-        String consulta = "SELECT * FROM Transferencias";
-        StringBuilder datos = new StringBuilder();
-        double totalImporte = 0.0;
-        int fila = 1;
-
-        try (PreparedStatement pstmt = conn.prepareStatement(consulta);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            while (rs.next()) {
-                String cbuDebito = rs.getString("CbuDebito");
-                String cbuCredito = rs.getString("CbuCredito");
-                double importe = rs.getDouble("Importe");
-                String concepto = rs.getString("Concepto");
-                String motivo = rs.getString("Motivo");
-                String referencia = rs.getString("Referencia");
-                String email = rs.getString("Email");
-                //String titular = rs.getString("Titular");
-
-                String filaDatos = String.format("%22s%22s%44s%012d%-50s%-3s%-12s%-50s%-1s\n",
-                    cbuDebito, cbuCredito, " ", (int) (importe * 100),
-                    concepto, motivo, referencia, email, "1");
-
-                datos.append(filaDatos);
-                totalImporte += importe;
-                fila++;
-            }
-
-            try (FileOutputStream fos = new FileOutputStream(filename)) {
-                fos.write(datos.toString().getBytes());
-                fos.write(String.format("%05d%017d%194s\n", fila, (int) (totalImporte * 100), "").getBytes());
-                System.out.println("Archivo exportado: " + filename);
-            } catch (IOException e) {
-                System.out.println("Error al guardar archivo: " + e.getMessage());
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error en consulta SQL: " + e.getMessage());
-        }
-    }
-
-     */
 }
