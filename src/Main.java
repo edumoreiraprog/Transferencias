@@ -97,6 +97,7 @@ public class Main {
                                 //Generar archivo .txt para transferencias
                                 //exportarArchivo.exportar("Creacion01.txt");
                                 exportarArchivo.exportar();
+                                abrirPaginaDescargas();
                                 break;
                             case 2:
                                 abrirPaginaDescargas();
