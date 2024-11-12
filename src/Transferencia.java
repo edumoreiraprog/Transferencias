@@ -10,13 +10,14 @@ public class Transferencia {
     private String referencia;
     private String email;
     private String titular;
+    private String estado;
 
     // Constructor
 
     public Transferencia() {
     }
 
-    public Transferencia(String aliasDEBITO, String aliasCREDITO, String cbuDEBITO, String cbuCREDITO, double importe, String concepto, String motivo, String referencia, String email, String titular) {
+    public Transferencia(String aliasDEBITO, String aliasCREDITO, String cbuDEBITO, String cbuCREDITO, double importe, String concepto, String motivo, String referencia, String email, String titular, String estado) {
         this.aliasDEBITO = aliasDEBITO;
         this.aliasCREDITO = aliasCREDITO;
         this.cbuDEBITO = cbuDEBITO;
@@ -27,6 +28,7 @@ public class Transferencia {
         this.referencia = referencia;
         this.email = email;
         this.titular = titular;
+        this.estado = estado;
     }
 
     // Getters and setters
@@ -108,6 +110,14 @@ public class Transferencia {
 
     public void setTitular(String titular) {
         this.titular = titular;
+    }
+
+    public String getEstado() {
+        return this.estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     // Métodos

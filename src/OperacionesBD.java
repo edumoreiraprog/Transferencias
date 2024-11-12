@@ -270,7 +270,7 @@ public class OperacionesBD {
 
                     // Crear la instancia de Transferencia
                     transferencia = new Transferencia(aliasDEBITO, aliasCREDITO, cbuDEBITO, cbuCREDITO,
-                            importe, concepto, motivo, referencia, email, titular);
+                            importe, concepto, motivo, referencia, email, titular, "pendiente");
                 } else {
                     System.out.println("No se encontró el titular de crédito con la referencia proporcionada.");
                 }
@@ -287,7 +287,7 @@ public class OperacionesBD {
     // Método para insertar la transferencia en la base de datos
     public void insertarTransferencia(Transferencia transferencia) {
         String sql = "INSERT INTO Transferencias (AliasDebito, AliasCredito, CbuDebito, CbuCredito, " +
-                "Importe, Concepto, Motivo, Referencia, Email, Titular) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "Importe, Concepto, Motivo, Referencia, Email, Titular, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setString(1, transferencia.getAliasDEBITO());
@@ -300,6 +300,7 @@ public class OperacionesBD {
             pstmt.setString(8, transferencia.getReferencia());
             pstmt.setString(9, transferencia.getEmail());
             pstmt.setString(10, transferencia.getTitular());
+            pstmt.setString(11, transferencia.getEstado());
 
             pstmt.executeUpdate();
             System.out.println("Transferencia insertada en la base de datos.");

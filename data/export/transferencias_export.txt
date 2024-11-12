@@ -1,0 +1,5 @@
+12345678901234567890120987654321098765432109                                            000000050050Pago                                              CUOPagoDeuda   robertgomez@gmail.com                             1
+09876543210987654321091234567890123456789012                                            000000080000Robo2                                             HON123456789012juanperez24@gmail.com                             1
+12345678901234567890120987654321098765432109                                            000000010050Pago                                              PREPagoPrestamorobertgomez@gmail.com                             1
+12345678901234567890120987654321098765432109                                            000000000050limosna                                           VARLimosna     robertgomez@gmail.com                             1
+0000500000000000140150                                                                                                                                                                                                  

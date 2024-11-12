@@ -1,3 +1,6 @@
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -92,9 +95,13 @@ public class Main {
                         switch (opArchivo) {
                             case 1:
                                 //Generar archivo .txt para transferencias
-                                exportarArchivo.exportar("Creacion01.txt");
+                                //exportarArchivo.exportar("Creacion01.txt");
+                                exportarArchivo.exportar();
                                 break;
                             case 2:
+                                abrirPaginaDescargas();
+                                break;
+                            case 3:
                                 System.out.println("Volviendo al menú principal...\n");
                                 break;
                             default:
@@ -150,11 +157,26 @@ public class Main {
         System.out.print("Seleccione una opción: ");
     }
 
-    public static void limpiarConsola() {
-        for (int i = 0; i < 50; i++) {
-            System.out.println();
+    public static void abrirPaginaDescargas() {
+        // Ruta al archivo HTML dentro del proyecto (ajusta esta ruta si es necesario)
+        File pagina = new File("data/pagina/index.html");
+
+        try {
+            // Verificar si la clase Desktop es compatible en el sistema actual
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+
+                // Intentar abrir el archivo si es un archivo HTML local
+                if (pagina.exists()) {
+                    desktop.browse(pagina.toURI()); // Abre el archivo en el navegador
+                } else {
+                    System.out.println("La página HTML no se encontró en la ruta especificada.");
+                }
+            } else {
+                System.out.println("La clase Desktop no está soportada en este sistema.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error al intentar abrir la página: " + e.getMessage());
         }
     }
-
-
 }

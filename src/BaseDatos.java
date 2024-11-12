@@ -58,9 +58,10 @@ public class BaseDatos {
                 "Importe REAL NOT NULL, " +
                 "Concepto TEXT UNIQUE, " +
                 "Motivo TEXT, " +
-                "Referencia TEXTNOT NULL, " +
+                "Referencia TEXT NOT NULL, " +
                 "Email TEXT, " +
-                "Titular TEXT NOT NULL);");
+                "Titular TEXT NOT NULL, " +
+                "Estado TEXT NOT NULL);");
     }
 
     // Método para crear tablas de forma modular
