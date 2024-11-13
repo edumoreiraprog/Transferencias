@@ -26,10 +26,10 @@ public class BaseDatos {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.close();
-                System.out.println("Conexión cerrada.");
+                System.out.println("\nConexión cerrada.");
             }
         } catch (SQLException e) {
-            System.out.println("Error al cerrar la conexión: " + e.getMessage());
+            System.out.println("\nError al cerrar la conexión: " + e.getMessage());
         }
     }
 

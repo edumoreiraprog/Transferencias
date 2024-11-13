@@ -1,3 +1,2 @@
-31100302110000195690310110003720000064230630                                            000011139855PagoUtedyc                                        VARUtedyc      bernardez.a@utedyc.org.ar                         1
-31100302110000195690312850892230000022359091                                            000002119800La Segunda Coop Ltda Seguros Grales               VARLaSegunda   clubatleticomunicipales@hotmail.com.ar            1
-0000300000000013259655                                                                                                                                                                                                  
+31100302110000195690312850892230000022359091                                            000000050050Pagos Varios                                      VARPagos24     clubatleticomunicipales@hotmail.com.ar            1
+0000200000000000050050                                                                                                                                                                                                  

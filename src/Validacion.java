@@ -12,7 +12,7 @@ public class Validacion {
     // Métodos de validación
     public static String validarCUIL() {
         return validarEntrada("Ingrese CUIL/CUIT: ", CUIL_REGEX,
-                "Error: Debe contener solo 11 dígitos numéricos.");
+                "Error: Debe contener 11 dígitos numéricos.");
     }
 
     public static String validarAlias(String mensaje) {
@@ -30,7 +30,7 @@ public class Validacion {
             String input = scanner.nextLine();
 
             if (input.isEmpty()) {
-                System.out.println("Error: No se ingresó ningún valor. Intente de nuevo.");
+                System.out.println("\nError: No se ingresó ningún valor. Intente de nuevo.");
                 continue;
             }
 
@@ -40,10 +40,10 @@ public class Validacion {
                 if (importe > 0) {
                     return importe;
                 } else {
-                    System.out.println("Error: el IMPORTE debe ser mayor a 0.");
+                    System.out.println("\nError: el IMPORTE debe ser mayor a 0.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Error: Entrada no válida. Debe ser un número.");
+                System.out.println("\nError: Entrada no válida. Debe ser un número.");
             }
         }
     }
@@ -72,10 +72,10 @@ public class Validacion {
                     System.out.println("Has seleccionado " + MOTIVOS[opcion - 1]);
                     return MOTIVOS[opcion - 1].substring(0, 3); // Retorna las primeras 3 letras
                 } else {
-                    System.out.println("Número no válido, inténtelo de nuevo.");
+                    System.out.println("\nNúmero no válido, inténtelo de nuevo.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Error: Entrada no válida. Debe ser un número.");
+                System.out.println("\nError: Entrada no válida. Debe ser un número.");
             }
         }
     }
@@ -103,10 +103,10 @@ public class Validacion {
                 if (opcion >= min && opcion <= max) {
                     return opcion;
                 } else {
-                    System.out.println("Error: La opción debe estar entre " + min + " y " + max + ".");
+                    System.out.println("\nError: La opción debe estar entre " + min + " y " + max + ".");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Error: Entrada no válida. Debe ser un número.");
+                System.out.println("\nError: Entrada no válida. Debe ser un número.");
             }
         }
     }
@@ -133,9 +133,9 @@ public class Validacion {
             if (!input.isEmpty() && input.length() >= min && input.length() <= max) {
                 return input;
             } else if (input.isEmpty()) {
-                System.out.println("Error: No se ingresó ningún valor. Intente de nuevo.");
+                System.out.println("\nError: No se ingresó ningún valor. Intente de nuevo.");
             } else {
-                System.out.printf("Error: La longitud del %s debe estar entre %d y %d caracteres.%n", nombreCampo, min, max);
+                System.out.printf("\nError: La longitud del %s debe estar entre %d y %d caracteres.%n", nombreCampo, min, max);
             }
         }
     }

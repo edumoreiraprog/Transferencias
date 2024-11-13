@@ -21,7 +21,7 @@ public class OperacionesBD {
         try (PreparedStatement stmt = conexion.prepareStatement(consulta);
              ResultSet resultado = stmt.executeQuery()) {
 
-            System.out.println("===== Lista de Titulares =====");
+            System.out.println("\n===== Lista de Titulares =====");
             while (resultado.next()) {
                 String id = resultado.getString("TitularesID");
                 String cuil = resultado.getString("Cuil");
@@ -31,11 +31,11 @@ public class OperacionesBD {
                 String cbu = resultado.getString("Cbu");
                 String referencia = resultado.getString("Referencia");
 
-                System.out.println("ID: "+ id + ", CUIL: " + cuil + ", Nombre: " + nombre + ", Email: " + email + ", Alias: " + alias + ", CBU: " + cbu + ", REFERENCIA: " + referencia);
+                System.out.println("CUIL: " + cuil + ", Nombre: " + nombre + ", Email: " + email + ", REFERENCIA: " + referencia);
             }
             System.out.println("==============================");
         } catch (SQLException e) {
-            System.out.println("Error al listar titulares: " + e.getMessage());
+            System.out.println("\nError al listar titulares: " + e.getMessage());
         }
     }
 
@@ -43,6 +43,7 @@ public class OperacionesBD {
     public void agregarTitular() {
         Titular titular = new Titular();
 
+        System.out.println();
         titular.setCuil(Validacion.validarCUIL());
         titular.setNombre(Validacion.validarTitular());
         titular.setEmail(Validacion.validarEmail());
@@ -69,13 +70,15 @@ public class OperacionesBD {
 
     // Eliminar un titular por CUIL de la base
     public void eliminarTitular() {
-        System.out.print("Ingrese la referencia del Titular a eliminar: ");
         String referencia = Validacion.validarReferencia();
         buscarTitular(referencia);
-        System.out.println("¿Esta seguro que desea eliminar? (si | no)");
-        String respuesta = scanner.nextLine();
+        System.out.println("\n¿Esta seguro que desea eliminar?");
+        System.out.println("1. Si");
+        System.out.println("2. No");
+        System.out.println("===============================");
+        int respuesta = Validacion.validarOpcionMenu(1, 2);
 
-        if (respuesta.equalsIgnoreCase("si")) {
+        if (respuesta == 1) {
             String consulta = "DELETE FROM Titulares WHERE Referencia = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(consulta)) {
                 stmt.setString(1, referencia);
@@ -83,15 +86,15 @@ public class OperacionesBD {
                 int filasAfectadas = stmt.executeUpdate();
 
                 if (filasAfectadas > 0) {
-                    System.out.println("Titular eliminado exitosamente.");
+                    System.out.println("\nTitular eliminado exitosamente.");
                 } else {
-                    System.out.println("No se encontró un titular con esa Referencia.");
+                    System.out.println("\nNo se encontró un titular con esa Referencia.");
                 }
             } catch (SQLException e) {
-                System.out.println("Error al eliminar titular: " + e.getMessage());
+                System.out.println("\nError al eliminar titular: " + e.getMessage());
             }
         } else {
-            System.out.println("No se eliminó el titular.");
+            System.out.println("\nNo se eliminó el titular.");
         }
     }
 
@@ -102,24 +105,24 @@ public class OperacionesBD {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    int id = rs.getInt("TitularesID");
                     String nombre = rs.getString("nombre");
                     String cbu = rs.getString("Cbu");
+                    String alias = rs.getString("Alias");
+                    String email = rs.getString("Email");
 
-                    System.out.println("Titular encontrado: ");
-                    System.out.println("ID: " + id);
-                    System.out.println("Nombre: " + nombre);
-                    System.out.println("Cbu: " + cbu);
+                    System.out.println("\nTitular encontrado: ");
+                    System.out.println("Nombre: " + nombre + ", Cbu: " + cbu + ", Alias: " + alias + ", Email: " + email);
                 } else {
-                    System.out.println("No se encontró un titular con la Referencia " + referencia);
+                    System.out.println("\nNo se encontró un titular con la Referencia " + referencia);
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error al buscar el titular: " + e.getMessage());
+            System.out.println("\nError al buscar el titular: " + e.getMessage());
         }
     }
 
     public void actualizarTitular(){
+        System.out.println();
         String modificarCuil = Validacion.validarCUIL();
         String nuevoNombre = Validacion.validarTitular();
         String nuevoEmail = Validacion.validarEmail();
@@ -142,9 +145,9 @@ public class OperacionesBD {
 
             // Verificamos si la actualización fue exitosa
             if (filasAfectadas > 0) {
-                System.out.println("Titular actualizado con éxito.");
+                System.out.println("\nTitular actualizado con éxito.");
             } else {
-                System.out.println("No se encontró un titular con el Cuil " + modificarCuil);
+                System.out.println("\n No se encontró un titular con el Cuil " + modificarCuil);
             }
 
         } catch (Exception e) {
@@ -248,6 +251,7 @@ public class OperacionesBD {
         try (PreparedStatement stmt = conexion.prepareStatement(consulta);
              ResultSet resultado = stmt.executeQuery()) {
 
+            System.out.println("\n===== Lista de Transferencias =====\n");
             while (resultado.next()) {
                 String aliasDEBITO = resultado.getString("aliasDEBITO");
                 String aliasCREDITO = resultado.getString("aliasCREDITO");

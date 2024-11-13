@@ -75,9 +75,9 @@ public class Titular {
 
             // Ejecutar la inserción
             pstmt.executeUpdate();
-            System.out.println("Titular insertado exitosamente: " + nombre);
+            System.out.println("\nTitular insertado exitosamente: " + nombre);
         } catch (SQLException e) {
-            System.out.println("Error al insertar el titular: " + e.getMessage());
+            System.out.println("\nError al insertar el titular: " + e.getMessage());
         }
     }
 }

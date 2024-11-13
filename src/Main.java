@@ -18,27 +18,27 @@ public class Main {
         exportarArchivo.setConn(base.getConnection());
 
         int opcion;
+        boolean salir = false; // Variable de control para el ciclo principal
 
         do {
             menuPrincipal();
-            opcion = Validacion.validarOpcionMenu(1, 5);
-            System.out.println(opcion);
+            opcion = Validacion.validarOpcionMenu(1, 4);
 
             switch (opcion) {
                 case 1:
                     int opTitular;
                     do {
                         menuTitulares();
-                        opTitular = scanner.nextInt(); // Leer opción del submenú
-                        scanner.nextLine(); // Limpiar el buffer
+                        opTitular = Validacion.validarOpcionMenu(1, 6); // Leer opción del submenu
+
                         switch (opTitular) {
                             case 1:
                                 // Agregar Titular
                                 operaciones.agregarTitular();  // Llamar función para agregar titular
                                 break;
                             case 2:
-                                // Consultar Titular por ID
-                                operaciones.buscarTitular(Validacion.validarReferencia());// Llamar función para buscar titular
+                                // Buscar Titular
+                                operaciones.buscarTitular(Validacion.validarReferencia()); // Llamar función para buscar titular
                                 break;
                             case 3:
                                 // Actualizar Titular
@@ -53,45 +53,46 @@ public class Main {
                                 operaciones.listarTitulares(); // Llamar función para listar titulares
                                 break;
                             case 6:
-                                // Volver al Menú Principal
-                                System.out.println("Volviendo al menú principal...\n");
+                                // Volver al Menu Principal
+                                System.out.println("\nVolviendo al menú principal...\n");
                                 break;
                             default:
-                                System.out.println("Opción no válida.\n");
+                                System.out.println("\nOpción no válida.\n");
                                 break;
                         }
-                    } while (opTitular != 6);
+                    } while (opTitular != 6); // Sale si opTitular es 6 (Volver al menú principal)
                     break;
+
                 case 2:
                     int opTrasferencia;
                     do {
                         menuTransferencias();
-                        opTrasferencia = scanner.nextInt(); // Leer opción del submenú
-                        scanner.nextLine(); // Limpiar el buffer
+                        opTrasferencia = Validacion.validarOpcionMenu(1, 3); // Leer opción del submenú
                         switch (opTrasferencia) {
                             case 1:
                                 // Agregar transferencia
                                 operaciones.insertarTransferencia(operaciones.crearTransferencia());
                                 break;
                             case 2:
-                                // Consultar historial de Transferencias
+                                // Consultar Transferencias en la base
                                 operaciones.listarTransferencias();
                                 break;
                             case 3:
-                                System.out.println("Volviendo al menú principal...\n");
+                                System.out.println("\nVolviendo al menú principal...");
                                 break;
                             default:
-                                System.out.println("Opción no válida.\n");
+                                System.out.println("\nOpción no válida.\n");
                                 break;
                         }
-                    } while (opTrasferencia != 3);
+                    } while (opTrasferencia != 3); // Sale si opTrasferencia es 3 (Volver al menú principal)
                     break;
+
                 case 3:
                     int opArchivo;
                     do {
                         menuArchivo();
-                        opArchivo = scanner.nextInt(); // Leer opción del submenú
-                        scanner.nextLine(); // Limpiar el buffer
+                        opArchivo = Validacion.validarOpcionMenu(1, 3); // Leer opción del submenú
+
                         switch (opArchivo) {
                             case 1:
                                 exportarArchivo.exportar();
@@ -101,59 +102,63 @@ public class Main {
                                 abrirPaginaDescargas();
                                 break;
                             case 3:
-                                System.out.println("Volviendo al menú principal...\n");
+                                System.out.println("\nVolviendo al menú principal...");
                                 break;
                             default:
-                                System.out.println("Opción no válida.\n");
+                                System.out.println("\nOpción no válida.\n");
                                 break;
                         }
-                    } while (opArchivo != 2);
+                    } while (opArchivo != 3); // Sale si opArchivo es 3 (Volver al menú principal)
+                    break;
+
+                case 4:
+                    // Salir del programa
+                    base.cerrarConexion(); // Cerramos la conexión
+                    System.out.println("\nSaliendo del programa...\n");
+                    salir = true;
                     break;
                 default:
-                    System.out.println("¡¡¡Opción ingresada incorrecta!!!\n");
+                    System.out.println("\n¡¡¡Opción ingresada incorrecta!!!\n");
+                    break;
             }
-        } while (opcion != 3);
+        } while (!salir); // Termina el ciclo cuando la variable "salir" es true
         scanner.close();
     }
 
     public static void menuPrincipal() {
-        System.out.println("===== Menú Principal =====");
+        System.out.println("\n===== Menú Principal =====");
         System.out.println("1. Gestión de Titulares");
         System.out.println("2. Gestión de Transferencias");
         System.out.println("3. Gestión de archivo .txt");
         System.out.println("4. Salir");
         System.out.println("==========================");
-        System.out.print("Seleccione una opción: ");
     }
 
     public static void menuTitulares() {
-        System.out.println("==== Gestión de Titulares ====");
+        System.out.println("\n==== Gestión de Titulares ====");
         System.out.println("1. Agregar Titular");
-        System.out.println("2. Consultar Titular por ID");
+        System.out.println("2. Consultar Titular por Referencia");
         System.out.println("3. Actualizar Titular");
         System.out.println("4. Eliminar Titular");
         System.out.println("5. Listar todos los Titulares");
         System.out.println("6. Volver al Menú Principal");
         System.out.println("==============================");
-        System.out.print("Seleccione una opción: ");
     }
 
     public static void menuTransferencias() {
-        System.out.println("== Gestión de Transferencias ==");
+        System.out.println("\n== Gestión de Transferencias ==");
         System.out.println("1. Agregar Transferencia");
-        System.out.println("2. Consultar historial de Transferencias");
+        System.out.println("2. Consultar Transferencias");
         System.out.println("3. Volver al Menú Principal");
         System.out.println("===============================");
-        System.out.print("Seleccione una opción: ");
     }
 
     public static void menuArchivo() {
-        System.out.println("===== Gestión de Archivos =====");
+        System.out.println("\n===== Gestión de Archivos =====");
         System.out.println("1. Generar archivo .txt para transferencias");
         System.out.println("2. Descargar ultimo archivo generado");
         System.out.println("3. Volver al Menú Principal");
         System.out.println("===============================");
-        System.out.print("Seleccione una opción: ");
     }
 
     public static void abrirPaginaDescargas() {

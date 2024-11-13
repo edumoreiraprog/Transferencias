@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Descargas</title>
+    <title>Descarga de archivo txt</title>
     <style>
         /* Estilo general de la página */
         body {
@@ -77,7 +77,7 @@
         function guardarArchivo() {
             // Crear un enlace temporal para descargar el archivo
             const link = document.createElement('a');
-            link.href = './transferencias_export.txt'; // Reemplaza con la ruta completa del archivo
+            link.href = './transferencias_export.txt'; // Ruta completa del archivo
             link.download = 'nuevo_nombre.txt'; // Nombre con el que se guardará el archivo
 
             // Simular un clic en el enlace para iniciar la descarga

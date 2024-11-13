@@ -13,7 +13,6 @@ public class Transferencia {
     private String estado;
 
     // Constructor
-
     public Transferencia() {
     }
 
@@ -119,7 +118,5 @@ public class Transferencia {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-
-    // Métodos
 
 }
