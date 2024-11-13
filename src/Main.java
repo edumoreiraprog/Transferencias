@@ -18,10 +18,11 @@ public class Main {
         exportarArchivo.setConn(base.getConnection());
 
         int opcion;
+        boolean salir = false; // Variable de control para el ciclo principal
 
         do {
             menuPrincipal();
-            opcion = Validacion.validarOpcionMenu(1, 5);
+            opcion = Validacion.validarOpcionMenu(1, 4);
             System.out.println(opcion);
 
             switch (opcion) {
@@ -29,39 +30,40 @@ public class Main {
                     int opTitular;
                     do {
                         menuTitulares();
-                        opTitular = scanner.nextInt(); // Leer opción del submenú
+                        opTitular = scanner.nextInt(); // Leer opcion del submenu
                         scanner.nextLine(); // Limpiar el buffer
                         switch (opTitular) {
                             case 1:
                                 // Agregar Titular
-                                operaciones.agregarTitular();  // Llamar función para agregar titular
+                                operaciones.agregarTitular();  // Llamar funcion para agregar titular
                                 break;
                             case 2:
-                                // Consultar Titular por ID
-                                operaciones.buscarTitular(Validacion.validarReferencia());// Llamar función para buscar titular
+                                // Buscar Titular
+                                operaciones.buscarTitular(Validacion.validarReferencia()); // Llamar funcion para buscar titular
                                 break;
                             case 3:
                                 // Actualizar Titular
-                                operaciones.actualizarTitular(); // Llamar función para actualizar titular
+                                operaciones.actualizarTitular(); // Llamar funcion para actualizar titular
                                 break;
                             case 4:
                                 // Eliminar Titular
-                                operaciones.eliminarTitular(); // Llamar función para eliminar titular
+                                operaciones.eliminarTitular(); // Llamar funcion para eliminar titular
                                 break;
                             case 5:
                                 // Listar todos los Titulares
-                                operaciones.listarTitulares(); // Llamar función para listar titulares
+                                operaciones.listarTitulares(); // Llamar funcion para listar titulares
                                 break;
                             case 6:
-                                // Volver al Menú Principal
-                                System.out.println("Volviendo al menú principal...\n");
+                                // Volver al Menu Principal
+                                System.out.println("\nVolviendo al menú principal...\n");
                                 break;
                             default:
-                                System.out.println("Opción no válida.\n");
+                                System.out.println("\nOpción no válida.\n");
                                 break;
                         }
-                    } while (opTitular != 6);
+                    } while (opTitular != 6); // Sale si opTitular es 6 (Volver al menú principal)
                     break;
+
                 case 2:
                     int opTrasferencia;
                     do {
@@ -78,14 +80,15 @@ public class Main {
                                 operaciones.listarTransferencias();
                                 break;
                             case 3:
-                                System.out.println("Volviendo al menú principal...\n");
+                                System.out.println("\nVolviendo al menú principal...\n");
                                 break;
                             default:
-                                System.out.println("Opción no válida.\n");
+                                System.out.println("\nOpción no válida.\n");
                                 break;
                         }
-                    } while (opTrasferencia != 3);
+                    } while (opTrasferencia != 3); // Sale si opTrasferencia es 3 (Volver al menú principal)
                     break;
+
                 case 3:
                     int opArchivo;
                     do {
@@ -101,18 +104,25 @@ public class Main {
                                 abrirPaginaDescargas();
                                 break;
                             case 3:
-                                System.out.println("Volviendo al menú principal...\n");
+                                System.out.println("\nVolviendo al menú principal...\n");
                                 break;
                             default:
-                                System.out.println("Opción no válida.\n");
+                                System.out.println("\nOpción no válida.\n");
                                 break;
                         }
-                    } while (opArchivo != 2);
+                    } while (opArchivo != 3); // Sale si opArchivo es 3 (Volver al menú principal)
+                    break;
+
+                case 4:
+                    // Salir del programa
+                    System.out.println("\nSaliendo del programa...\n");
+                    salir = true;
                     break;
                 default:
-                    System.out.println("¡¡¡Opción ingresada incorrecta!!!\n");
+                    System.out.println("\n¡¡¡Opción ingresada incorrecta!!!\n");
+                    break;
             }
-        } while (opcion != 3);
+        } while (!salir); // Termina el ciclo cuando la variable "salir" es true
         scanner.close();
     }
 
