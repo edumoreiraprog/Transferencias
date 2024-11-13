@@ -16,13 +16,17 @@ public class Main {
 
         ExportarArchivo exportarArchivo = new ExportarArchivo();
         exportarArchivo.setConn(base.getConnection());
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> ca4b7c625ca6c0105627f05afc5216650361d373
         int opcion;
         boolean salir = false; // Variable de control para el ciclo principal
 
         do {
             menuPrincipal();
-            opcion = Validacion.validarOpcionMenu(1, 4);
+            opcion = Validacion.validarOpcionMenu(1, 5);
             System.out.println(opcion);
 
             switch (opcion) {
@@ -30,11 +34,16 @@ public class Main {
                     int opTitular;
                     do {
                         menuTitulares();
+<<<<<<< HEAD
                         opTitular = scanner.nextInt(); // Leer opcion del submenu
+=======
+                        opTitular = scanner.nextInt(); // Leer opción del submenú
+>>>>>>> ca4b7c625ca6c0105627f05afc5216650361d373
                         scanner.nextLine(); // Limpiar el buffer
                         switch (opTitular) {
                             case 1:
                                 // Agregar Titular
+<<<<<<< HEAD
                                 operaciones.agregarTitular();  // Llamar funcion para agregar titular
                                 break;
                             case 2:
@@ -62,6 +71,35 @@ public class Main {
                                 break;
                         }
                     } while (opTitular != 6); // Sale si opTitular es 6 (Volver al menú principal)
+=======
+                                operaciones.agregarTitular();  // Llamar función para agregar titular
+                                break;
+                            case 2:
+                                // Consultar Titular por ID
+                                operaciones.buscarTitular();// Llamar función para buscar titular
+                                break;
+                            case 3:
+                                // Actualizar Titular
+                                operaciones.actualizarTitular(); // Llamar función para actualizar titular
+                                break;
+                            case 4:
+                                // Eliminar Titular
+                                operaciones.eliminarTitular(); // Llamar función para eliminar titular
+                                break;
+                            case 5:
+                                // Listar todos los Titulares
+                                operaciones.listarTitulares(); // Llamar función para listar titulares
+                                break;
+                            case 6:
+                                // Volver al Menú Principal
+                                System.out.println("Volviendo al menú principal...\n");
+                                break;
+                            default:
+                                System.out.println("Opción no válida.\n");
+                                break;
+                        }
+                    } while (opTitular != 6);
+>>>>>>> ca4b7c625ca6c0105627f05afc5216650361d373
                     break;
 
                 case 2:
@@ -80,6 +118,7 @@ public class Main {
                                 operaciones.listarTransferencias();
                                 break;
                             case 3:
+<<<<<<< HEAD
                                 System.out.println("\nVolviendo al menú principal...\n");
                                 break;
                             default:
@@ -87,6 +126,15 @@ public class Main {
                                 break;
                         }
                     } while (opTrasferencia != 3); // Sale si opTrasferencia es 3 (Volver al menú principal)
+=======
+                                System.out.println("Volviendo al menú principal...\n");
+                                break;
+                            default:
+                                System.out.println("Opción no válida.\n");
+                                break;
+                        }
+                    } while (opTrasferencia != 3);
+>>>>>>> ca4b7c625ca6c0105627f05afc5216650361d373
                     break;
 
                 case 3:
@@ -97,6 +145,7 @@ public class Main {
                         scanner.nextLine(); // Limpiar el buffer
                         switch (opArchivo) {
                             case 1:
+<<<<<<< HEAD
                                 exportarArchivo.exportar();
                                 abrirPaginaDescargas();
                                 break;
@@ -123,6 +172,24 @@ public class Main {
                     break;
             }
         } while (!salir); // Termina el ciclo cuando la variable "salir" es true
+=======
+                                //Generar archivo .txt para transferencias
+                                exportarArchivo.exportar("Creacion01.txt");
+                                break;
+                            case 2:
+                                System.out.println("Volviendo al menú principal...\n");
+                                break;
+                            default:
+                                System.out.println("Opción no válida.\n");
+                                break;
+                        }
+                    } while (opArchivo != 2);
+                    break;
+                default:
+                    System.out.println("¡¡¡Opción ingresada incorrecta!!!\n");
+            }
+        } while (opcion != 3);
+>>>>>>> ca4b7c625ca6c0105627f05afc5216650361d373
         scanner.close();
     }
 
@@ -164,6 +231,7 @@ public class Main {
         System.out.println("3. Volver al Menú Principal");
         System.out.println("===============================");
         System.out.print("Seleccione una opción: ");
+<<<<<<< HEAD
     }
 
     public static void abrirPaginaDescargas() {
@@ -187,5 +255,15 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Error al intentar abrir la página: " + e.getMessage());
         }
+=======
+>>>>>>> ca4b7c625ca6c0105627f05afc5216650361d373
     }
+
+    public static void limpiarConsola() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
+    }
+
+
 }

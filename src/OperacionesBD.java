@@ -69,6 +69,7 @@ public class OperacionesBD {
 
     // Eliminar un titular por CUIL de la base
     public void eliminarTitular() {
+<<<<<<< HEAD
         System.out.print("Ingrese la referencia del Titular a eliminar: ");
         String referencia = Validacion.validarReferencia();
         buscarTitular(referencia);
@@ -128,6 +129,10 @@ public class OperacionesBD {
         String nuevaReferencia = Validacion.validarReferencia();
 
         String consulta = "UPDATE Titulares SET nombre = ?, email = ?, alias = ?, cbu = ?, referencia = ? WHERE cuil = ?";
+=======
+        System.out.print("Ingrese el CUIL del Titular a eliminar: ");
+        String cuil = scanner.nextLine();
+>>>>>>> ca4b7c625ca6c0105627f05afc5216650361d373
 
         try (PreparedStatement stmt = conexion.prepareStatement(consulta)) {
             stmt.setString(1, nuevoNombre);
@@ -152,6 +157,143 @@ public class OperacionesBD {
         }
     }
 
+<<<<<<< HEAD
+=======
+    public void buscarTitular(){
+        System.out.print("Ingrese el Cuil del titular a buscar: ");
+        String cuilTitular = scanner.nextLine();
+
+        String consulta = "SELECT * FROM Titulares WHERE cuil = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(consulta)){
+            stmt.setString(1, cuilTitular);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("nombre");
+                    String cbu = rs.getString("Cbu");
+                    
+                    System.out.println("Titular encontrado: ");
+                    System.out.println("ID: " + id);
+                    System.out.println("Nombre: " + nombre);
+                    System.out.println("Cbu: " + cbu);
+                } else {
+                    System.out.println("No se encontró un titular con el Cuil " + cuilTitular);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al buscar el titular: " + e.getMessage());
+        }
+    }
+
+    public void actualizarTitular(){
+        System.out.print("Ingrese el Cuil del Titular a modificar: ");
+        String modificarCuil = scanner.nextLine();
+        
+        System.out.print("Ingrese el nuevo Nombre: ");
+        String nuevoNombre = scanner.nextLine();
+        
+        System.out.print("Ingrese el nuevo Email: ");
+        String nuevoEmail = scanner.nextLine();
+        
+        System.out.print("Ingrese el nuevo Alias: ");
+        String nuevoAlias = scanner.nextLine();
+        
+        System.out.print("Ingrese el nuevo CBU: ");
+        String nuevoCbu = scanner.nextLine();
+        
+        System.out.print("Ingrese la nueva Referencia: ");
+        String nuevaReferencia = scanner.nextLine();
+
+        String consulta = "UPDATE Titulares SET nombre = ?, email = ?, alias = ?, cbu = ?, referencia = ? WHERE cuil = ?";
+
+        try (PreparedStatement stmt = conexion.prepareStatement(consulta)) {
+            stmt.setString(1, nuevoNombre);  
+            stmt.setString(2, nuevoEmail); 
+            stmt.setString(3, nuevoAlias);
+            stmt.setString(4, nuevoCbu);
+            stmt.setString(5, nuevaReferencia);
+            
+            // Ejecutamos la consulta de actualización
+            int filasAfectadas = stmt.executeUpdate();
+            
+            // Verificamos si la actualización fue exitosa
+            if (filasAfectadas > 0) {
+                System.out.println("Titular actualizado con éxito.");
+            } else {
+                System.out.println("No se encontró un titular con el Cuil " + modificarCuil);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error al modificar el titular: " + e.getMessage());
+        }
+    }
+
+    /*
+    public Transferencia crearTransferencia(String aliasDebito, String aliasCredito) {
+        Transferencia transferencia = null;
+
+        // Consulta SQL para obtener los datos del titular que envía el dinero
+        String sqlDebito = "SELECT alias, cbu FROM titulares WHERE alias = ?";
+        String sqlCredito = "SELECT alias, cbu, email, nombre FROM titulares WHERE alias = ?";
+
+        try (
+                PreparedStatement pstmtDebito = conexion.prepareStatement(sqlDebito);
+                PreparedStatement pstmtCredito = conexion.prepareStatement(sqlCredito);
+        ) {
+            // Buscar datos del titular de débito
+            pstmtDebito.setString(1, aliasDebito);
+            ResultSet rsDebito = pstmtDebito.executeQuery();
+
+            if (rsDebito.next()) {
+                String aliasDEBITO = rsDebito.getString("alias");
+                String cbuDEBITO = rsDebito.getString("cbu");
+
+                // Buscar datos del titular de crédito
+                pstmtCredito.setString(1, aliasCredito);
+                ResultSet rsCredito = pstmtCredito.executeQuery();
+
+                if (rsCredito.next()) {
+                    String aliasCREDITO = rsCredito.getString("alias");
+                    String cbuCREDITO = rsCredito.getString("cbu");
+                    String email = rsCredito.getString("email");
+                    String titular = rsCredito.getString("nombre");
+
+                    // Pedir datos restantes al usuario
+                    Scanner scanner = new Scanner(System.in);
+
+                    System.out.print("Ingrese el importe: ");
+                    double importe = Validacion.validarImporte();
+                    scanner.nextLine();  // Consumir la nueva línea
+
+                    System.out.print("Ingrese el concepto: ");
+                    String concepto = Validacion.validarConcepto();
+
+                    System.out.print("Ingrese el motivo: ");
+                    String motivo = Validacion.validarMotivo();
+
+                    System.out.print("Ingrese la referencia: ");
+                    String referencia = Validacion.validarReferencia();
+
+                    // Crear la instancia de Transferencia
+                    transferencia = new Transferencia(aliasDEBITO, aliasCREDITO, cbuDEBITO, cbuCREDITO,
+                            importe, concepto, motivo, referencia, email, titular);
+                } else {
+                    System.out.println("No se encontró el titular de crédito con el alias proporcionado.");
+                }
+            } else {
+                System.out.println("No se encontró el titular de débito con el alias proporcionado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener datos de la base: " + e.getMessage());
+        }
+
+        return transferencia;
+    }
+
+     */
+
+>>>>>>> ca4b7c625ca6c0105627f05afc5216650361d373
     public Transferencia crearTransferencia() {
         Transferencia transferencia = null;
 
