@@ -71,34 +71,38 @@ public class OperacionesBD {
     // Eliminar un titular por CUIL de la base
     public void eliminarTitular() {
         String referencia = Validacion.validarReferencia();
-        buscarTitular(referencia);
-        System.out.println("\n¿Esta seguro que desea eliminar?");
-        System.out.println("1. Si");
-        System.out.println("2. No");
-        System.out.println("===============================");
-        int respuesta = Validacion.validarOpcionMenu(1, 2);
+        boolean encontrado = buscarTitular(referencia);
 
-        if (respuesta == 1) {
-            String consulta = "DELETE FROM Titulares WHERE Referencia = ?";
-            try (PreparedStatement stmt = conexion.prepareStatement(consulta)) {
-                stmt.setString(1, referencia);
+        if (encontrado) {
+            System.out.println("\n¿Esta seguro que desea eliminar?");
+            System.out.println("1. Si");
+            System.out.println("2. No");
+            System.out.println("===============================");
+            int respuesta = Validacion.validarOpcionMenu(1, 2);
 
-                int filasAfectadas = stmt.executeUpdate();
+            if (respuesta == 1) {
+                String consulta = "DELETE FROM Titulares WHERE Referencia = ?";
+                try (PreparedStatement stmt = conexion.prepareStatement(consulta)) {
+                    stmt.setString(1, referencia);
 
-                if (filasAfectadas > 0) {
-                    System.out.println("\nTitular eliminado exitosamente.");
-                } else {
-                    System.out.println("\nNo se encontró un titular con esa Referencia.");
+                    int filasAfectadas = stmt.executeUpdate();
+
+                    if (filasAfectadas > 0) {
+                        System.out.println("\nTitular eliminado exitosamente.");
+                    } else {
+                        System.out.println("\nNo se encontró un titular con esa Referencia.");
+                    }
+                } catch (SQLException e) {
+                    System.out.println("\nError al eliminar titular: " + e.getMessage());
                 }
-            } catch (SQLException e) {
-                System.out.println("\nError al eliminar titular: " + e.getMessage());
+            } else {
+                System.out.println("\nNo se eliminó el titular.");
             }
-        } else {
-            System.out.println("\nNo se eliminó el titular.");
         }
+
     }
 
-    public void buscarTitular(String referencia){
+    public boolean buscarTitular(String referencia){
         String consulta = "SELECT * FROM Titulares WHERE Referencia = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(consulta)){
             stmt.setString(1, referencia);
@@ -112,6 +116,7 @@ public class OperacionesBD {
 
                     System.out.println("\nTitular encontrado: ");
                     System.out.println("Nombre: " + nombre + ", Cbu: " + cbu + ", Alias: " + alias + ", Email: " + email);
+                    return true;
                 } else {
                     System.out.println("\nNo se encontró un titular con la Referencia " + referencia);
                 }
@@ -119,8 +124,48 @@ public class OperacionesBD {
         } catch (SQLException e) {
             System.out.println("\nError al buscar el titular: " + e.getMessage());
         }
+        return false;
     }
 
+    public void actualizarTitular(){
+        String buscarCuil = Validacion.validarReferencia();
+        boolean encontrado = buscarTitular(buscarCuil);
+
+        if (encontrado){
+            System.out.println();
+            String nuevoNombre = Validacion.validarTitular();
+            String nuevoEmail = Validacion.validarEmail();
+            String nuevoAlias = Validacion.validarAlias("Ingrese ALIAS CBU: ");
+            String nuevoCbu = Validacion.validarCBU("Ingrese CBU: ");
+            String nuevaReferencia = Validacion.validarReferencia();
+
+            String consulta = "UPDATE Titulares SET nombre = ?, email = ?, alias = ?, cbu = ?, referencia = ? WHERE referencia = ?";
+
+            try (PreparedStatement stmt = conexion.prepareStatement(consulta)) {
+                stmt.setString(1, nuevoNombre);
+                stmt.setString(2, nuevoEmail);
+                stmt.setString(3, nuevoAlias);
+                stmt.setString(4, nuevoCbu);
+                stmt.setString(5, nuevaReferencia);
+                stmt.setString(6, buscarCuil);
+
+                // Ejecutamos la consulta de actualización
+                int filasAfectadas = stmt.executeUpdate();
+
+                // Verificamos si la actualización fue exitosa
+                if (filasAfectadas > 0) {
+                    System.out.println("\nTitular actualizado con éxito.");
+                } else {
+                    System.out.println("\n No se encontró un titular con el Cuil " + buscarCuil);
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error al modificar el titular: " + e.getMessage());
+            }
+        }
+    }
+
+    /*
     public void actualizarTitular(){
         System.out.println();
         String modificarCuil = Validacion.validarCUIL();
@@ -155,6 +200,8 @@ public class OperacionesBD {
         }
     }
 
+     */
+
     public Transferencia crearTransferencia() {
         Transferencia transferencia = null;
 
@@ -167,7 +214,7 @@ public class OperacionesBD {
                 PreparedStatement pstmtCredito = conexion.prepareStatement(sqlCredito);
         ) {
             System.out.println("Ingrese Referencia Debito: ");
-            String refDebito = scanner.nextLine();
+            String refDebito = Validacion.validarReferencia();
 
             // Buscar datos del titular de débito
             pstmtDebito.setString(1, refDebito);
@@ -178,7 +225,7 @@ public class OperacionesBD {
                 String cbuDEBITO = rsDebito.getString("Cbu");
 
                 System.out.println("Ingrese Referencia Crédito: ");
-                String refCredito = scanner.nextLine();
+                String refCredito = Validacion.validarReferencia();
 
                 // Buscar datos del titular de crédito
                 pstmtCredito.setString(1, refCredito);
@@ -216,7 +263,6 @@ public class OperacionesBD {
         } catch (SQLException e) {
             System.out.println("Error al obtener datos de la base: " + e.getMessage());
         }
-
         return transferencia;
     }
 

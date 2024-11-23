@@ -38,7 +38,7 @@ public class Main {
                                 break;
                             case 2:
                                 // Buscar Titular
-                                operaciones.buscarTitular(Validacion.validarReferencia()); // Llamar función para buscar titular
+                                operaciones.buscarTitular(Validacion.validarReferencia());
                                 break;
                             case 3:
                                 // Actualizar Titular
@@ -71,7 +71,10 @@ public class Main {
                         switch (opTrasferencia) {
                             case 1:
                                 // Agregar transferencia
-                                operaciones.insertarTransferencia(operaciones.crearTransferencia());
+                                Transferencia nuevaTransferencia = operaciones.crearTransferencia();
+                                if (nuevaTransferencia != null) {
+                                    operaciones.insertarTransferencia(nuevaTransferencia);
+                                }
                                 break;
                             case 2:
                                 // Consultar Transferencias en la base
